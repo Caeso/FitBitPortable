@@ -1,0 +1,10 @@
+﻿{
+  "supports": {},
+  "dependencies": {
+    "Microsoft.NETCore.Targets.UniversalWindowsPlatform": "5.0.0",
+    "Newtonsoft.Json": "8.0.3"
+  },
+  "frameworks": {
+    ".NETPortable,Version=v4.5,Profile=Profile78": {}
+  }
+}
