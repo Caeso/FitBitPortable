@@ -63,7 +63,7 @@ namespace FitBitPersonalTestApp
             web.NavigationCompleted += Web_NavigationCompleted;
             web.NavigationFailed += Web_NavigationFailed;
 
-            _Client = new FitBitClient();
+             _Client = new FitBitClient();
 
             SolidColorBrush white = new SolidColorBrush(Windows.UI.Color.FromArgb(0, 0, 0, 0));
             signalNewAuthentication.Fill = white;
@@ -235,6 +235,7 @@ namespace FitBitPersonalTestApp
 
         private async void button_Click(object sender, RoutedEventArgs e)
         {
+            /*
             List<FitBitPortable.DataModels.DeviceData> list = await _Client.GetDeviceData();
 
             FitBitPortable.DataModels.UserProfile user = await _Client.GetUserProfile();
@@ -251,6 +252,16 @@ namespace FitBitPersonalTestApp
                 await _Client.GetHeartRateTimeSeries(
                     new DateTime(2016, 4, 10, 0, 0, 0),
                     new DateTime(2016, 4, 17, 0, 0, 0));
+            */
+            ActivityTimeSeries calories, steps, distance, floors, elevation, steps2;
+
+            calories = await _Client.GetActivityTimeSeries(ActivitiyTimeSeriesResource.TrackerCalories, new DateTime(2016, 04, 15, 0, 0, 0), new DateTime(2016, 04, 16, 0, 0, 0));
+            steps = await _Client.GetActivityTimeSeries(ActivitiyTimeSeriesResource.TrackerSteps, new DateTime(2016, 04, 15, 0, 0, 0), new DateTime(2016, 04, 16, 0, 0, 0));
+            distance = await _Client.GetActivityTimeSeries(ActivitiyTimeSeriesResource.TrackerDistance, new DateTime(2016, 04, 15, 0, 0, 0), new DateTime(2016, 04, 16, 0, 0, 0));
+            floors = await _Client.GetActivityTimeSeries(ActivitiyTimeSeriesResource.TrackerFloors, new DateTime(2016, 04, 15, 0, 0, 0), new DateTime(2016, 04, 16, 0, 0, 0));
+            elevation = await _Client.GetActivityTimeSeries(ActivitiyTimeSeriesResource.TrackerElevation, new DateTime(2016, 04, 15, 0, 0, 0), new DateTime(2016, 04, 16, 0, 0, 0));
+
+            steps2 = await _Client.GetActivityTimeSeries(ActivitiyTimeSeriesResource.Steps, new DateTime(2016, 04, 15, 0, 0, 0), new DateTime(2016, 04, 16, 0, 0, 0));
         }
 
         private void X_PropertyChanged1(object sender, System.ComponentModel.PropertyChangedEventArgs e)

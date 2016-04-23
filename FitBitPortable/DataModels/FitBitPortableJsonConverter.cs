@@ -26,22 +26,6 @@ namespace FitBitPortable.DataModels
             return OAuth2;
         }
 
-        internal static List<DeviceData> DeviceData(string JsonData)
-        {
-            List<DeviceData> DeviceDataList = new List<DeviceData>();
-
-            try
-            {
-                DeviceDataList = JsonConvert.DeserializeObject<List<DeviceData>>(JsonData);
-            }
-            catch (Exception e)
-            {
-                throw new FitBitApiDeviceDataException();
-            };
-
-            return DeviceDataList;
-        }
-
         internal static UserProfile UserProfile(string JsonData)
         {
             UserProfile user;
@@ -58,6 +42,40 @@ namespace FitBitPortable.DataModels
             return user;
         }
 
+        internal static T Generic<T>(string JsonData)
+        {
+            T log;
+            try
+            {
+                log = JsonConvert.DeserializeObject<T>(JsonData);
+            }
+            catch (Exception e)
+            {
+                throw new FitBitJsonDeserializeGenericException();
+            };
+
+            return log;
+        }
+
+        /*
+        internal static List<DeviceData> DeviceData(string JsonData)
+        {
+            List<DeviceData> DeviceDataList = new List<DeviceData>();
+
+            try
+            {
+                DeviceDataList = JsonConvert.DeserializeObject<List<DeviceData>>(JsonData);
+            }
+            catch (Exception e)
+            {
+                throw new FitBitApiDeviceDataException();
+            };
+
+            return DeviceDataList;
+        }
+        */
+
+        /*
         internal static ActivitySummary ActivitySummary(string JsonData)
         {
             ActivitySummary summary;
@@ -72,7 +90,26 @@ namespace FitBitPortable.DataModels
 
             return summary;
         }
+        */
 
+        /*
+        internal static ActivityTimeSeries ActivityTimeSerie(string JsonData)
+        {
+            ActivityTimeSeries log;
+            try
+            {
+                log = JsonConvert.DeserializeObject<ActivityTimeSeries>(JsonData);
+            }
+            catch (Exception e)
+            {
+                throw new FitBitApiActivityTimeSeriesException();
+            };
+
+            return log;
+        }
+        */
+
+        /*
         internal static HeartRateIntradayTimeSeries HeartRateIntradayTimeSeries(string JsonData)
         {
             HeartRateIntradayTimeSeries heartratedata;
@@ -87,7 +124,9 @@ namespace FitBitPortable.DataModels
 
             return heartratedata;
         }
+        */
 
+        /*
         internal static HeartRateTimeSeries HeartRateTimeSeries(string JsonData)
         {
             HeartRateTimeSeries heartratedata;
@@ -102,5 +141,6 @@ namespace FitBitPortable.DataModels
 
             return heartratedata;
         }
+        */
     }
 }

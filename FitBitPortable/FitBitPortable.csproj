@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="DataModels\FitBitPortableActivity.cs" />
     <Compile Include="DataModels\FitBitPortableActivitySummary.cs" />
+    <Compile Include="DataModels\FitBitPortableActivityTimeSeries.cs" />
     <Compile Include="DataModels\FitBitPortableDeviceData.cs" />
     <Compile Include="DataModels\FitBitPortableHeartRateIntradayTimeSeries.cs" />
     <Compile Include="DataModels\FitBitPortableHeartRateTimeSeries.cs" />

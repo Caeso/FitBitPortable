@@ -76,7 +76,7 @@ namespace FitBitPortable
             HttpResponseMessage Response = await HttpClient.GetAsync(RequestUri);
             string JsonData = await Response.Content.ReadAsStringAsync();
 
-            return DataModels.JsonConverter.DeviceData(JsonData);
+            return DataModels.JsonConverter.Generic<List<DeviceData>>(JsonData);
         }
 
         public async Task<UserProfile> GetUserProfile()
@@ -96,8 +96,6 @@ namespace FitBitPortable
 
         public async Task<ActivitySummary> GetActivitySummary(DateTimeOffset Date)
         {
-            // List<DeviceData> DeviceDataList = new List<DeviceData>();
-
             HttpClient.DefaultRequestHeaders.Clear();
             HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(OAuth2Data.TokenType, OAuth2Data.AccessToken);
 
@@ -109,7 +107,102 @@ namespace FitBitPortable
             HttpResponseMessage Response = await HttpClient.GetAsync(RequestUri);
             string JsonData = await Response.Content.ReadAsStringAsync();
 
-            return DataModels.JsonConverter.ActivitySummary(JsonData);
+            return DataModels.JsonConverter.Generic<ActivitySummary>(JsonData);
+        }
+
+        public async Task<ActivityTimeSeries> GetActivityTimeSeries(ActivitiyTimeSeriesResource Resource, DateTimeOffset BaseDate, DateTimeOffset EndDate)
+        {
+            HttpClient.DefaultRequestHeaders.Clear();
+            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(OAuth2Data.TokenType, OAuth2Data.AccessToken);
+
+            // GET /1/user/[user-id]/[resource-path]/date/[date]/[period].json
+            // GET /1/user/[user-id]/[resource-path]/date/[base-date]/[end-date].json
+            // user-id The encoded ID of the user. Use "-" (dash) for current logged-in user. 
+            // resource-path The resource path; see options in the "Resource Path Options" section below. 
+            // base-date The range start date, in the format yyyy-MM-dd or today. 
+            // end-date The end date of the range. 
+            // date The end date of the period specified in the format yyyy-MM-dd or today. 
+            // period The range for which dict will be returned. Options are 1d, 7d, 30d, 1w, 1m, 3m, 6m, 1y, or max.
+
+            string resource = ActivitiyTimeSeriesResourceDictonary.dict[Resource];
+
+            Uri RequestUri = new Uri("https://api.fitbit.com/1/user/-/activities/"+
+                resource + "/" +
+                "date" + "/" +
+                BaseDate.ToString("yyyy-MM-dd") + "/" +
+                EndDate.ToString("yyyy-MM-dd") + ".json");
+
+            HttpResponseMessage Response = await HttpClient.GetAsync(RequestUri);
+            string JsonData = await Response.Content.ReadAsStringAsync();
+
+            switch (Resource)
+            {
+                case ActivitiyTimeSeriesResource.Calories:
+                    return DataModels.JsonConverter.Generic<ActivityTimeSeriesCalories>(JsonData);
+                case ActivitiyTimeSeriesResource.CaloriesBMR:
+                    return DataModels.JsonConverter.Generic<ActivityTimeSeriesCaloriesBMR>(JsonData);
+                case ActivitiyTimeSeriesResource.Steps:
+                    return DataModels.JsonConverter.Generic<ActivityTimeSeriesSteps>(JsonData);
+                case ActivitiyTimeSeriesResource.Distance:
+                    return DataModels.JsonConverter.Generic<ActivityTimeSeriesDistance>(JsonData);
+                case ActivitiyTimeSeriesResource.Floors:
+                    return DataModels.JsonConverter.Generic<ActivityTimeSeriesFloors>(JsonData);
+                case ActivitiyTimeSeriesResource.Elevation:
+                    return DataModels.JsonConverter.Generic<ActivityTimeSeriesElevation>(JsonData);
+                case ActivitiyTimeSeriesResource.MinutesSedentary:
+                    return DataModels.JsonConverter.Generic<ActivityTimeSeriesMinutesSedentary>(JsonData);
+                case ActivitiyTimeSeriesResource.MinutesLightlyActive:
+                    return DataModels.JsonConverter.Generic<ActivityTimeSeriesMinutesLightlyActive>(JsonData);
+                case ActivitiyTimeSeriesResource.MinutesVeryActive:
+                    return DataModels.JsonConverter.Generic<ActivityTimeSeriesMinutesVeryActive>(JsonData);
+                case ActivitiyTimeSeriesResource.ActivityCalories:
+                    return DataModels.JsonConverter.Generic<ActivityTimeSeriesActivityCalories>(JsonData);
+                case ActivitiyTimeSeriesResource.TrackerCalories:
+                    return DataModels.JsonConverter.Generic<ActivityTimeSeriesTrackerCalories>(JsonData);
+                case ActivitiyTimeSeriesResource.TrackerSteps:
+                    return DataModels.JsonConverter.Generic<ActivityTimeSeriesTrackerSteps>(JsonData);
+                case ActivitiyTimeSeriesResource.TrackerDistance:
+                    return DataModels.JsonConverter.Generic<ActivityTimeSeriesTrackerDistance>(JsonData);
+                case ActivitiyTimeSeriesResource.TrackerFloors:
+                    return DataModels.JsonConverter.Generic<ActivityTimeSeriesTrackerFloors>(JsonData);
+                case ActivitiyTimeSeriesResource.TrackerElevation:
+                    return DataModels.JsonConverter.Generic<ActivityTimeSeriesTrackerElevation>(JsonData);
+                case ActivitiyTimeSeriesResource.TrackerMinutesSedentary:
+                    return DataModels.JsonConverter.Generic<ActivityTimeSeriesTrackerMinutesSedentary>(JsonData);
+                case ActivitiyTimeSeriesResource.TrackerMinutesLightlyActive:
+                    return DataModels.JsonConverter.Generic<ActivityTimeSeriesTrackerMinutesLightlyActive>(JsonData);
+                case ActivitiyTimeSeriesResource.TrackerMinutesVeryActive:
+                    return DataModels.JsonConverter.Generic<ActivityTimeSeriesTrackerMinutesVeryActive>(JsonData);
+                case ActivitiyTimeSeriesResource.TrackerActivityCalories:
+                    return DataModels.JsonConverter.Generic<ActivityTimeSeriesTrackerActivityCalories>(JsonData);
+            }
+
+            return null;
+        }
+
+        public async Task<HeartRateTimeSeries> GetHeartRateTimeSeries(DateTimeOffset BaseDate, DateTimeOffset EndDate)
+        {
+            HttpClient.DefaultRequestHeaders.Clear();
+            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(OAuth2Data.TokenType, OAuth2Data.AccessToken);
+
+            // GET https://api.fitbit.com/1/user/[user-id]/activities/heart/date/[date]/[period].json
+            // GET https://api.fitbit.com/1/user/[user-id]/activities/heart/date/[base-date]/[end-date].json
+            // user-id The encoded ID of the user. Use "-" (dash) for current logged-in user. 
+            // base-date The range start date, in the format yyyy-MM-dd or today. 
+            // end-date The end date of the range. 
+            // date The end date of the period specified in the format yyyy-MM-dd or today. 
+            // period The range for which dict will be returned. Options are 1d, 7d, 30d, 1w, 1m. 
+
+            Uri RequestUri = new Uri(
+                "https://api.fitbit.com/1/user/-/activities/heart/date/" +
+                BaseDate.ToString("yyyy-MM-dd") + "/" +
+                EndDate.ToString("yyyy-MM-dd") + ".json"
+                );
+
+            HttpResponseMessage HeartRateDataResponse = await HttpClient.GetAsync(RequestUri);
+            string JsonData = await HeartRateDataResponse.Content.ReadAsStringAsync();
+
+            return DataModels.JsonConverter.Generic<HeartRateTimeSeries>(JsonData);
         }
 
         public async Task<List<HeartRateIntradayTimeSeries>> GetHeartRateIntradayTimeSeries(DateTimeOffset Start, DateTimeOffset End, HeartRateIntradayDetailLevel DetailLevel)
@@ -141,7 +234,7 @@ namespace FitBitPortable
 
             // GET https://api.fitbit.com/1/user/-/activities/heart/date/[date]/[end-date]/[detail-level]/time/[start-time]/[end-time].json
             // date The date, in the format yyyy-MM-dd or today 
-            // detail-level Number of data points to include. Either 1sec or 1min. Optional.
+            // detail-level Number of dict points to include. Either 1sec or 1min. Optional.
             // start-time The start of the period, in the format HH:mm. Optional. 
             // end-time The end of the period, in the format HH:mm. Optional.
             Uri RequestUri = new Uri(
@@ -157,32 +250,7 @@ namespace FitBitPortable
             HttpResponseMessage HeartRateDataResponse = await HttpClient.GetAsync(RequestUri);
             string JsonData = await HeartRateDataResponse.Content.ReadAsStringAsync();
 
-            return DataModels.JsonConverter.HeartRateIntradayTimeSeries(JsonData);
-        }
-
-        public async Task<HeartRateTimeSeries> GetHeartRateTimeSeries(DateTimeOffset BaseDate, DateTimeOffset EndDate)
-        {
-            HttpClient.DefaultRequestHeaders.Clear();
-            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(OAuth2Data.TokenType, OAuth2Data.AccessToken);
-
-            // GET https://api.fitbit.com/1/user/[user-id]/activities/heart/date/[date]/[period].json
-            // GET https://api.fitbit.com/1/user/[user-id]/activities/heart/date/[base-date]/[end-date].json
-            // user-id The encoded ID of the user. Use "-" (dash) for current logged-in user. 
-            // base-date The range start date, in the format yyyy-MM-dd or today. 
-            // end-date The end date of the range. 
-            // date The end date of the period specified in the format yyyy-MM-dd or today. 
-            // period The range for which data will be returned. Options are 1d, 7d, 30d, 1w, 1m. 
-
-            Uri RequestUri = new Uri(
-                "https://api.fitbit.com/1/user/-/activities/heart/date/" +
-                BaseDate.ToString("yyyy-MM-dd") + "/" +
-                EndDate.ToString("yyyy-MM-dd") + ".json"
-                );
-
-            HttpResponseMessage HeartRateDataResponse = await HttpClient.GetAsync(RequestUri);
-            string JsonData = await HeartRateDataResponse.Content.ReadAsStringAsync();
-
-            return DataModels.JsonConverter.HeartRateTimeSeries(JsonData);
+            return DataModels.JsonConverter.Generic<HeartRateIntradayTimeSeries>(JsonData);
         }
     }
 

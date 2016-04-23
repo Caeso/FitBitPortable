@@ -8,7 +8,11 @@ namespace FitBitPortable.OAuth2
 {
     public class Secrets
     {
-        public Secrets(string ClientID, string ClientSecret) { this.ClientId = ClientId; this.ClientSecret = ClientSecret; }
+        public Secrets(string ClientId, string ClientSecret)
+        {
+            this.ClientId = ClientId;
+            this.ClientSecret = ClientSecret;
+        }
 
         public string ClientId { get; set; }
         public string ClientSecret { get; set; }
