@@ -255,13 +255,7 @@ namespace FitBitPersonalTestApp
             */
             ActivityTimeSeries calories, steps, distance, floors, elevation, steps2;
 
-            calories = await _Client.GetActivityTimeSeries(ActivitiyTimeSeriesResource.TrackerCalories, new DateTime(2016, 04, 15, 0, 0, 0), new DateTime(2016, 04, 16, 0, 0, 0));
-            steps = await _Client.GetActivityTimeSeries(ActivitiyTimeSeriesResource.TrackerSteps, new DateTime(2016, 04, 15, 0, 0, 0), new DateTime(2016, 04, 16, 0, 0, 0));
-            distance = await _Client.GetActivityTimeSeries(ActivitiyTimeSeriesResource.TrackerDistance, new DateTime(2016, 04, 15, 0, 0, 0), new DateTime(2016, 04, 16, 0, 0, 0));
-            floors = await _Client.GetActivityTimeSeries(ActivitiyTimeSeriesResource.TrackerFloors, new DateTime(2016, 04, 15, 0, 0, 0), new DateTime(2016, 04, 16, 0, 0, 0));
-            elevation = await _Client.GetActivityTimeSeries(ActivitiyTimeSeriesResource.TrackerElevation, new DateTime(2016, 04, 15, 0, 0, 0), new DateTime(2016, 04, 16, 0, 0, 0));
-
-            steps2 = await _Client.GetActivityTimeSeries(ActivitiyTimeSeriesResource.Steps, new DateTime(2016, 04, 15, 0, 0, 0), new DateTime(2016, 04, 16, 0, 0, 0));
+            List<ActivityIntradayTimeSeries> x = await _Client.GetActivityIntradayTimeSeries(ActivitiyTimeSeriesResource.Calories, new DateTime(2016, 4, 10, 0, 0, 0), new DateTime(2016, 4, 12, 0, 0, 0), ActivityIntradayDetailLevel.DetailLevel1min);
         }
 
         private void X_PropertyChanged1(object sender, System.ComponentModel.PropertyChangedEventArgs e)

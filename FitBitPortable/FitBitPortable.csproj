@@ -38,6 +38,7 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataModels\FitBitPortableActivityIntradayTimeSeries.cs" />
     <Compile Include="DataModels\FitBitPortableActivity.cs" />
     <Compile Include="DataModels\FitBitPortableActivitySummary.cs" />
     <Compile Include="DataModels\FitBitPortableActivityTimeSeries.cs" />
